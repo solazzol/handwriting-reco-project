@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  font-family: 'Inter', 'Arial', 'Roboto', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9f9f9; /* Sfondo chiaro per un look moderno */
+  color: #333; /* Colore del testo principale */
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', 'Arial', 'Helvetica Neue', sans-serif;
+  font-weight: 600; /* Un peso più forte per evidenziare i titoli */
+  /*color: #023E8A; Colore accattivante e coerente */
+  margin: 0;
+}
+code {
+  font-family: 'Fira Code', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+  background-color: #f4f4f4; /* Sfondo leggermente grigio per il codice */
+  padding: 0.2em 0.4em;
+  border-radius: 4px; /* Angoli arrotondati */
+}

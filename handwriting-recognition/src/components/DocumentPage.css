@@ -1,0 +1,97 @@
+/* General Layout */
+.document-page-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f8f9fa; /* Light grey */
+  }
+  
+  /* Sidebar Styles */
+  .sidebar {
+    background-color: #343a40; /* Dark grey */
+    color: #ffffff;
+    padding: 20px;
+    transition: width 0.3s;
+    overflow: hidden;
+  }
+  
+  .sidebar.open {
+    width: 200px;
+  }
+  
+  .sidebar.closed {
+    width: 50px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .toggle-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  .documents-list {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .documents-list li {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .documents-list li:hover {
+    text-decoration: underline;
+  }
+  
+  /* Content Styles */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    background-color: #ffffff;
+  }
+  
+  /* Logout Button */
+  .logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #dc3545; /* Red */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .logout-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Document Viewer */
+  .document-viewer {
+    margin-top: 80px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #343a40;
+    margin-bottom: 20px;
+  }
+  
