@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torchvision import models
 
 # -----------------------------
-# 🔨 Definizione modello ResNet18 + ArcFace
+# Definizione modello ResNet18 + ArcFace
 # -----------------------------
 class ArcFaceLayer(nn.Module):
     def __init__(self, embedding_dim, num_classes, s=30.0, m=0.30):

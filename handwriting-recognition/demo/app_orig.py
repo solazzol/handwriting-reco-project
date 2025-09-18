@@ -128,41 +128,39 @@ def get_vector_for_matching(img_pil, preprocess_tf, color_mode, model, target_di
 # Load risorse
 # ============================================================
 model = load_model()
-split = torch.load(SPLIT_PATH, map_location='cpu')  # lo usiamo solo se serve
+dataset, split = load_split_and_dataset()
+idx_to_name = dataset.classes                  # original_label_idx -> nome cartella
+label_map = split['label_map']                 # {original_label_idx -> new_id} solo autorizzati
+authorized_ids = set(label_map.keys())
+authorized_names = sorted([idx_to_name[i] for i in authorized_ids], key=natkey)
+
 author_centroids_raw = load_centroids(CENTROIDS_PATH)
 
-# Usa direttamente i nomi dai centroidi, se sono stringhe
-first_key = next(iter(author_centroids_raw.keys()))
-if isinstance(first_key, (str, np.str_)):
-    # Normalizza centroidi e lista autorizzati dai centroidi stessi
-    author_centroids = {k: l2_normalize(v) for k, v in author_centroids_raw.items()}
-    authorized_names = sorted(list(author_centroids.keys()), key=natkey)
-else:
-    # Caso raro: centroidi indicizzati con interi.
-    # Proviamo a ricavare i nomi da split se disponibile, altrimenti fallback a stringhe "id_###".
-    label_map = split.get('label_map', {})
-    # Se nello split c'è una mappa opzionale id->name, usala (se l'hai salvata)
-    id_to_name = split.get('id_to_name', None)
-    if id_to_name is None:
-        # Fallback: nomi sintetici
-        id_to_name = {int(i): f"id_{int(i):05d}" for i in label_map.keys()}
+raw_keys = list(author_centroids_raw.keys())
+st.sidebar.write(f"Centroidi nel file (grezzi): {len(author_centroids_raw)}")
+st.sidebar.write(f"Tipo chiavi: {type(raw_keys[0]).__name__ if raw_keys else 'n/a'}")
+st.sidebar.write(f"Prime chiavi: {raw_keys[:10]}")
+st.sidebar.write(f"Autorizzati nello split (expected): {len(authorized_names)}")
 
-    # Filtra centroidi sugli id autorizzati e rinomina a nome leggibile
+# Porta le chiavi dei centroidi ai NOME classe e normalizza
+first_key = next(iter(author_centroids_raw.keys()))
+if isinstance(first_key, (int, np.integer)):
     author_centroids = {
-        id_to_name[int(k)]: l2_normalize(v)
-        for k, v in author_centroids_raw.items()
-        if int(k) in label_map.keys()
+        idx_to_name[k]: l2_normalize(v) for k, v in author_centroids_raw.items()
+        if k in authorized_ids
     }
-    authorized_names = sorted(list(author_centroids.keys()), key=natkey)
+else:
+    author_centroids = {
+        k: l2_normalize(v) for k, v in author_centroids_raw.items()
+        if k in authorized_names
+    }
 
 if not author_centroids:
-    st.error("Nessun centroide dopo il filtro: assicurati che le chiavi dei centroidi coincidano con gli autori autorizzati.")
+    st.error("Nessun centroide dopo il filtro: controlla che centroidi e split corrispondano e che le chiavi siano nomi/ID coerenti.")
     st.stop()
 
 CENTROID_DIM = len(next(iter(author_centroids.values())))
-# Preprocess come prima
 preprocess_tf, color_mode, in_ch = build_preprocess(model)
-
 
 # ============================================================
 # Sidebar diagnostica
